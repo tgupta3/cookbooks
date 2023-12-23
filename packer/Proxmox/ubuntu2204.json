@@ -1,7 +1,7 @@
 {
 	"builders": [
 		{
-			"type": "proxmox",
+			"type": "proxmox-iso",
 			"proxmox_url": "https://{{user `proxmox_host`}}/api2/json",
 			"insecure_skip_tls_verify": true,
 			"username": "{{user `proxmox_api_user`}}",
@@ -30,7 +30,6 @@
 					"type": "scsi",
 					"disk_size": "{{ user `disk_size`}}",
 					"storage_pool": "{{user `datastore`}}",
-					"storage_pool_type": "{{user `datastore_type`}}",
 					"format": "raw",
 					"cache_mode": "writeback"
 				}

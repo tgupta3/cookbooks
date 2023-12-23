@@ -17,9 +17,8 @@
 	"cores": "2",
 	"sockets": "1",
 	"memory": "2048",
-	"disk_size": "12G",
+	"disk_size": "10G",
 	"datastore": "local-lvm",
-	"datastore_type": "directory",
 	"iso": "local:iso/ubuntu-22.04.3-live-server-amd64.iso",
 
 	"boot_command_prefix": "<esc><esc><enter><wait>",

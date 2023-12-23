@@ -18,11 +18,6 @@
 				{
 					"model": "virtio",
 					"bridge": "vmbr0"
-				},
-                {
-					"model": "virtio",
-					"bridge": "vmbr0",
-                    "vlan_tag": "100"
 				}
 			],
 			"disks": [
@@ -35,7 +30,7 @@
 				}
 			],
 
-			"ssh_timeout": "10m",
+			"ssh_timeout": "20m",
 			"ssh_password": "{{ user `ssh_password` }}",
 			"ssh_username": "{{ user `ssh_username` }}",
 

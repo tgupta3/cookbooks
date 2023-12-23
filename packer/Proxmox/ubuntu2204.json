@@ -48,26 +48,10 @@
 
 			"boot_wait": "10s",
 			"boot_command": [
-				"{{ user `boot_command_prefix` }}",
-				"/install/vmlinuz ",
-				"auto ",
-				"console-setup/ask_detect=false ",
-				"debconf/frontend=noninteractive ",
-				"debian-installer={{ user `locale` }} ",
-				"hostname={{ user `hostname` }} ",
-				"fb=false ",
-				"grub-installer/bootdev=/dev/sda<wait> ",
-				"initrd=/install/initrd.gz ",
-				"kbd-chooser/method=us ",
-				"keyboard-configuration/modelcode=SKIP ",
-				"locale={{ user `locale` }} ",
-				"noapic ",
-				"passwd/username={{ user `ssh_username` }} ",
-				"passwd/user-fullname={{ user `ssh_fullname` }} ",
-				"passwd/user-password={{ user `ssh_password` }} ",
-				"passwd/user-password-again={{ user `ssh_password` }} ",
-				"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `preseed_file` }} ",
-				"-- <enter>"
+				"c",
+				"linux /casper/vmlinuz -- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'",
+				"<enter><wait><wait>", "initrd /casper/initrd",
+				"<enter><wait><wait>", "boot<enter>"
 			]
 		}
 	],
@@ -77,14 +61,11 @@
 			"type": "shell",
 			"environment_vars": ["DEBIAN_FRONTEND=noninteractive"],
 			"inline": [
-				"date > provision.txt",
-				"sudo apt-get update",
-				"sudo apt-get -y upgrade",
+				"while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+				"sudo rm -f /etc/cloud/cloud.cfg.d/99-installer.cfg",
+				"sudo cloud-init clean",
 				"sudo apt-get -y dist-upgrade",
-				"sudo apt-get -y install linux-generic linux-headers-generic linux-image-generic",
-				"sudo apt-get -y install qemu-guest-agent cloud-init",
-				"sudo apt-get -y install procps iputils-ping telnet netcat mc wget curl dnsutils iproute2 vim tcpdump",
-				"exit 0"
+				"sudo passwd -d ubuntu"
 			]
 		}
 	]

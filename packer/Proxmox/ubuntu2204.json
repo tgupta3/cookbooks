@@ -51,7 +51,7 @@
 			"boot_wait": "10s",
 			"boot_command": [
 				"c",
-				"linux /casper/vmlinuz -- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'",
+				"linux /casper/vmlinuz -- autoinstall ds='nocloud-net;s=http://192.168.0.57:{{ .HTTPPort }}/'",
 				"<enter><wait><wait>", "initrd /casper/initrd",
 				"<enter><wait><wait>", "boot<enter>"
 			]

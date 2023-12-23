@@ -44,6 +44,8 @@
 
 			"iso_file": "{{user `iso`}}",
 			"http_directory": "./http",
+			"http_port_min": "9999",
+			"http_port_max": "9999",
 			"template_description": "{{ user `template_description` }}",
 
 			"boot_wait": "10s",

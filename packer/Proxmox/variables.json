@@ -1,6 +1,6 @@
 {
 	"proxmox_host": "10.50.0.102:8006",
-	"proxmox_node_name": "pve01",
+	"proxmox_node_name": "pve1",
 	"proxmox_api_user": "root@pam",
 	"proxmox_api_password": "{{env `PROXMOX_PASSWORD`}}",
 

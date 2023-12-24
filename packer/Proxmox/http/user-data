@@ -1,23 +1,45 @@
 #cloud-config
 autoinstall:
   version: 1
+  refresh-installer:
+    update: yes
   locale: en_US
   keyboard:
     layout: us
   storage:
     layout:
       name: lvm
-  identity:
-    hostname: ubuntu
-    username: ubuntu
-    password: "$6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0"
+  network:
+    version: 2
+    ethernets:
+      nic0:
+        match:
+          macaddress: "00:50:56:00:00:01"
+        dhcp4: yes
+        dhcp6: no
+        dhcp-identifier: mac
+        set-name: eth0
   ssh:
     install-server: yes
     allow-pw: yes
-  user-data:
-    disable_root: false
   packages:
     - qemu-guest-agent
-  late-commands:
-    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
-    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
+    - avahi-daemon
+  user-data:
+    preserve_hostname: false
+    hostname: ubuntutemplate
+    disable_root: true
+    users:
+      - name: packer
+        plain_text_passwd: packer
+        groups: sudo
+        lock_passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+      - name: tushar
+        ssh_authorized_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJSZRe439QjQEdTAgGiCapBFW9hDTyWR7/5yySJD31kn"
+        groups: sudo
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
+        shell: /bin/bash

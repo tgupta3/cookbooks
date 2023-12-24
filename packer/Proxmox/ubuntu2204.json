@@ -17,7 +17,8 @@
 			"network_adapters": [
 				{
 					"model": "virtio",
-					"bridge": "vmbr0"
+					"bridge": "vmbr0",
+					"mac_address": "00:50:56:00:00:01"
 				}
 			],
 			"disks": [
@@ -46,7 +47,7 @@
 			"boot_wait": "10s",
 			"boot_command": [
 				"c",
-				"linux /casper/vmlinuz -- autoinstall ds='nocloud-net;s=http://192.168.0.57:{{ .HTTPPort }}/'",
+				"linux /casper/vmlinuz -- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'",
 				"<enter><wait><wait>", "initrd /casper/initrd",
 				"<enter><wait><wait>", "boot<enter>"
 			]
@@ -60,9 +61,28 @@
 			"inline": [
 				"while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
 				"sudo rm -f /etc/cloud/cloud.cfg.d/99-installer.cfg",
-				"sudo cloud-init clean",
-				"sudo apt-get -y dist-upgrade",
-				"sudo passwd -d ubuntu"
+				"sudo cloud-init clean"
+			]
+		},
+		{
+			"pause_before": "20s",
+			"type": "shell",
+			"environment_vars": ["DEBIAN_FRONTEND=noninteractive"],
+			"inline": [
+				"sudo apt-get install -y ca-certificates curl gnupg lsb-release",
+				"curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
+            	"echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+            	"sudo apt-get -y update",
+            	"sudo apt-get install -y docker-ce docker-ce-cli"
+			]
+		},
+		{
+			"pause_before": "20s",
+			"type": "shell",
+			"environment_vars": ["DEBIAN_FRONTEND=noninteractive"],
+			"inline": [
+				"echo Cleanup user",
+				"sudo passwd -e {{ user `ssh_username` }}"
 			]
 		}
 	]

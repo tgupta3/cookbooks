@@ -1,0 +1,17 @@
+network:
+  version: 2
+  ethernets:
+    nic0:
+      match:
+          macaddress: "00:50:56:00:01:01"
+      dhcp4: yes
+      dhcp6: no
+      dhcp-identifier: mac
+      set-name: eth0
+    nic1:
+      match:
+          macaddress: "00:50:56:00:01:02"
+      dhcp4: no
+      dhcp6: no
+      dhcp-identifier: mac
+      set-name: eth1

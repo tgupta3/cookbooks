@@ -7,8 +7,10 @@ autoinstall:
   keyboard:
     layout: us
   storage:
+    swap:
+      size: 0
     layout:
-      name: lvm
+      name: direct
   network:
     version: 2
     ethernets:

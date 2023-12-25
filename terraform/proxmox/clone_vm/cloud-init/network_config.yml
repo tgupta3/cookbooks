@@ -5,6 +5,8 @@ network:
       match:
           macaddress: "00:50:56:00:01:01"
       dhcp4: yes
+      dhcp4-overrides:
+        route-metric: 10
       dhcp6: no
       dhcp-identifier: mac
       set-name: eth0
@@ -13,5 +15,20 @@ network:
           macaddress: "00:50:56:00:01:02"
       dhcp4: no
       dhcp6: no
-      dhcp-identifier: mac
       set-name: eth1
+  bridges:
+    br0:
+      interfaces: [nic1]
+      addresses: [10.100.0.91/24]  # Replace with your desired IP and subnet
+      nameservers:
+        addresses: [10.100.0.1]  # Replace with your desired DNS servers
+      routes:
+        - to: default
+          via: 10.100.0.1
+          metric: 200
+      parameters:
+        stp: false
+        forward-delay: 0
+      dhcp4: no
+      dhcp6: no
+      optional: true

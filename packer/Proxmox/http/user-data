@@ -38,6 +38,12 @@ autoinstall:
         lock_passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
+      - name: debug
+        passwd: "$6$ik72kNJ9QoEQHL43$V8h7j5eFWp13MNbfvgp4f2pGM.1u4lw2xnsiYmMpIgKgUWiSViswbpOkRb9surP7GAhK62yF3wvydK4WUrEs90"
+        groups: sudo
+        lock_passwd: false
+        shell: /bin/bash
+        ssh_redirect_user: true
       - name: tushar
         ssh_authorized_keys:
           - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJSZRe439QjQEdTAgGiCapBFW9hDTyWR7/5yySJD31kn"

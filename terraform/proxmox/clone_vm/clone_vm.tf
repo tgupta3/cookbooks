@@ -19,7 +19,6 @@ resource "proxmox_virtual_environment_vm" "data_vm" {
     interface    = "scsi0"
     size         = 16
   }
-
 }
 
 resource "proxmox_virtual_environment_file" "cloud_network_config" {
@@ -62,6 +61,7 @@ resource "proxmox_virtual_environment_vm" "docker-host1" {
     size = 6
     interface = "scsi0"
     file_format = "raw"
+    cache = "none"
   }
 
   # attached disks from data_vm

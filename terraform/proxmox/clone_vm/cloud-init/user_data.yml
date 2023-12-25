@@ -1,8 +1,9 @@
 #cloud-config
 preserve_hostname: false
-hostname: docker-host1
+hostname: pve1-docker-host1
+timezone: America/Los_Angeles
+ssh_pwauth: false
 runcmd:
-  - "userdel -r packer"
   - "chmod 777 /data"
 disk_setup:
   /dev/sdb:
@@ -18,3 +19,12 @@ fs_setup:
 
 mounts:
   - ["sdb", "/data", "auto"]
+
+write_files:
+  - path: /etc/docker/daemon.json
+    content: |
+      {
+        "data-root": "/data/docker"
+      }
+    owner: root:root
+    permissions: '0644'

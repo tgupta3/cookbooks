@@ -27,7 +27,7 @@
 					"disk_size": "{{ user `disk_size`}}",
 					"storage_pool": "{{user `datastore`}}",
 					"format": "raw",
-					"cache_mode": "writeback"
+					"cache_mode": "none"
 				}
 			],
 
@@ -82,7 +82,7 @@
 			"environment_vars": ["DEBIAN_FRONTEND=noninteractive"],
 			"inline": [
 				"echo Cleanup user",
-				"sudo passwd -e {{ user `ssh_username` }}"
+				"sudo userdel -r --force {{ user `ssh_username` }}"
 			]
 		}
 	]

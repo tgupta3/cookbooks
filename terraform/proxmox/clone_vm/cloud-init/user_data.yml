@@ -24,7 +24,8 @@ write_files:
   - path: /etc/docker/daemon.json
     content: |
       {
-        "data-root": "/data/docker"
+        "data-root": "/data/docker",
+        "bridge": "none"
       }
     owner: root:root
     permissions: '0644'

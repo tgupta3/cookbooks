@@ -14,10 +14,22 @@ resource "proxmox_virtual_environment_vm" "data_vm" {
   on_boot = false
   vm_id = 100
 
+  cpu {
+    cores = 1
+    architecture  = "x86_64"
+  }
+
   disk {
     file_format  = "raw"
     interface    = "scsi0"
     size         = 16
+  }
+
+  lifecycle {
+    ignore_changes = [
+      cpu["architecture"],
+      disk
+    ]
   }
 }
 
@@ -110,5 +122,9 @@ resource "proxmox_virtual_environment_vm" "docker-host1" {
   initialization {
     network_data_file_id = proxmox_virtual_environment_file.cloud_network_config.id
     user_data_file_id    = proxmox_virtual_environment_file.cloud_user_config.id
+  }
+
+  lifecycle {
+    ignore_changes = [network_device,disk]
   }
 }

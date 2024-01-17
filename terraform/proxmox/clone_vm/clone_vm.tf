@@ -167,7 +167,7 @@ resource "proxmox_virtual_environment_vm" "docker-host2" {
 
   disk {
     interface = "scsi0"
-    size  = 16
+    size  = 32
   }
 
   network_device {

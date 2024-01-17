@@ -1,0 +1,9 @@
+#cloud-config
+preserve_hostname: false
+hostname: pve1-devpod-host1
+timezone: America/Los_Angeles
+ssh_pwauth: false
+runcmd:
+  - "chmod 777 /data"
+  - sed -i "s/^.*allow-interfaces=.*/allow-interfaces=eth0/" /etc/avahi/avahi-daemon.conf
+  - systemctl restart avahi-daemon

@@ -1,0 +1,10 @@
+network:
+  version: 2
+  ethernets:
+    nic0:
+      match:
+          macaddress: "00:50:56:00:02:01"
+      dhcp4: yes
+      dhcp6: no
+      dhcp-identifier: mac
+      set-name: eth0

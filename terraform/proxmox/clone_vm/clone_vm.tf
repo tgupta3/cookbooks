@@ -128,3 +128,73 @@ resource "proxmox_virtual_environment_vm" "docker-host1" {
     ignore_changes = [network_device,disk]
   }
 }
+
+resource "proxmox_virtual_environment_file" "devpod_cloud_network_config" {
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = "pve1"
+
+  source_raw {
+    data = file("${path.module}/cloud-init/devpod_network_config.yml")
+    file_name = "devpod-ci-network.yml"
+  }
+}
+
+resource "proxmox_virtual_environment_file" "devpod_cloud_user_config" {
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = "pve1"
+
+  source_raw {
+    data = file("${path.module}/cloud-init/devpod_user_data.yml")
+    file_name = "devpod-ci-user.yml"
+  }
+}
+
+resource "proxmox_virtual_environment_vm" "docker-host2" {
+  name        = "devpod-host1"
+  description = "[Terraform] Docker Host2"
+  node_name = "pve1"
+  vm_id = 102
+
+  clone  {
+    vm_id =  9999
+  }
+
+  agent {
+    enabled = true
+  }
+
+  disk {
+    interface = "scsi0"
+    size  = 16
+  }
+
+  network_device {
+    bridge = "vmbr0"
+    mac_address = "00:50:56:00:02:01"
+  }
+
+  operating_system {
+    type = "l26"
+  }
+
+  cpu {
+    type = "x86-64-v2-AES"
+  }
+
+  startup {
+    order      = "3"
+    up_delay   = "60"
+    down_delay = "60"
+  }
+
+  memory {
+    dedicated = 4096
+  }
+
+  initialization {
+    network_data_file_id = proxmox_virtual_environment_file.devpod_cloud_network_config.id
+    user_data_file_id    = proxmox_virtual_environment_file.devpod_cloud_user_config.id
+  }
+}

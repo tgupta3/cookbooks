@@ -106,7 +106,7 @@ resource "proxmox_virtual_environment_vm" "docker-host1" {
   }
 
   cpu {
-    type = "x86-64-v2-AES"
+    type = "host"
   }
 
   startup {
